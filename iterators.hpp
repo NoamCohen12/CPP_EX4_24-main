@@ -1,9 +1,12 @@
 #ifndef ITERATORS_HPP
 #define ITERATORS_HPP
 
+#include <algorithm>
+#include <functional>
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <stdexcept>
 #include <unordered_set>
 #include <vector>
 
@@ -261,36 +264,54 @@ class DFSIterator {
         return !(*this == other);
     }
 };
+
 template <typename T>
 class HeapIterator {
    private:
     Node<T>* current;
     std::vector<Node<T>*> heap;
-    int index = 0;
-
-   public:
-    HeapIterator(Node<T>* root) {
+    void fill_heap(Node<T>* root) {
         if (root == nullptr) {
             return;
         }
-        for (auto node = this.begin_in_order(); node != tree.end_in_order(); ++node) {
-            heap.push_back(node.operator->());
+        heap.push_back(root);
+        for (auto child : root->children) {
+            fill_heap(child);
         }
-        std::make_heap(heap.begin(), heap.end(), [](Node<T>* a, Node<T>* b) { return a->get_value() < b->get_value(); });
+    }
+
+   public:
+    HeapIterator(Node<T>* root) : current(nullptr) {
+        if (root == nullptr) {
+            return;
+        }
+        fill_heap(root);
+        std::make_heap(heap.begin(), heap.end(), [](Node<T>* a, Node<T>* b) { return a->get_value() > b->get_value(); });
+        if (!heap.empty()) {
+            current = heap.front();
+        }
     }
 
     HeapIterator& operator++() {
-        if (index < heap.size()) {
-            current = heap[index];
-            ++index;
-    }
+        if (!heap.empty()) {
+            std::pop_heap(heap.begin(), heap.end(), [](Node<T>* a, Node<T>* b) { return a->get_value() > b->get_value(); });
+            heap.pop_back();
+            if (!heap.empty()) {
+                current = heap.front();
+            } else {
+                current = nullptr;
+            }
+        } else {
+            current = nullptr;
+        }
+        return *this;
     }
 
-    Node<T>* operator*() {
-        return current;
-    }
     Node<T>* operator->() {
         return current;
+    }
+    bool operator!=(const HeapIterator& other) {
+        return current != other.current;
     }
 };
 

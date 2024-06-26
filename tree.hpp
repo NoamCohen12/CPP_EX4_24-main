@@ -80,10 +80,10 @@ class Tree {
         return DFSIterator<T>(nullptr);
     }
 
-    HeapIterator<T> begin_heap() {
+    HeapIterator<T> begin_heap_scan() {
         return HeapIterator<T>(root);
     }
-    HeapIterator<T> end_heap() {
+    HeapIterator<T> end_heap_scan() {
         return HeapIterator<T>(nullptr);
     }
 };
