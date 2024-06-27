@@ -5,6 +5,7 @@
 #include "tree.hpp"
 using namespace std;
 int main() {
+    
     Node<double> root_node = Node<double>(1.1);
     Tree<double> tree;  // Binary tree that contains doubles.
     tree.add_root(&root_node);

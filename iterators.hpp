@@ -49,7 +49,10 @@ class PreOrderIterator {
         return *this;
     }
     bool operator!=(const PreOrderIterator& other) {
-        return stack.top() != other.stack.top();
+        return !(stack.top() == other.stack.top());
+    }
+    bool operator==(const PreOrderIterator& other) {
+        return stack.top() == other.stack.top();
     }
     Node<T>* operator[](int n) {
         PreOrderIterator temp(*this);  // Make a copy to not alter the original iterator
@@ -84,7 +87,10 @@ class PostOrderIterator {
     }
 
     bool operator!=(const PostOrderIterator& other) const {
-        return current != other.current;
+        return !(current == other.current);
+    }
+    bool operator==(const PostOrderIterator& other) const {
+        return current == other.current;
     }
 
     Node<T>* operator->() const {
@@ -159,7 +165,10 @@ class InOrderIterator {
     }
 
     bool operator!=(const InOrderIterator& other) const {
-        return current != other.current;
+        return !(current == other.current);
+    }
+    bool operator==(const InOrderIterator& other) const {
+        return current == other.current;
     }
 
     Node<T>* operator[](int n) {
@@ -215,7 +224,10 @@ class BfsIterator {
         return current;
     }
     bool operator!=(const BfsIterator& other) {
-        return current != other.current;
+        return !(current == other.current);
+    }
+    bool operator==(const BfsIterator& other) {
+        return current == other.current;
     }
 };
 
@@ -311,7 +323,10 @@ class HeapIterator {
         return current;
     }
     bool operator!=(const HeapIterator& other) {
-        return current != other.current;
+        return !(current == other.current);
+    }
+    bool operator==(const HeapIterator& other) {
+        return current == other.current;
     }
 };
 
