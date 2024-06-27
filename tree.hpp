@@ -7,7 +7,7 @@
 #include <iostream> // for std::cerr
 
 #include "Node.hpp"
-#include "iterators.hpp"
+#include "Iterators.hpp"
 
 template <typename T, int N = 2>
 class Tree {
@@ -121,18 +121,17 @@ private:
 
     void drawNode(sf::RenderWindow& window, Node<T>* node, sf::Vector2f position, float xOffset, float yOffset) {
         if (node == nullptr) return;
-
         sf::CircleShape circle(20);
-        circle.setFillColor(sf::Color::Green);
+        circle.setFillColor(sf::Color::Blue);
         circle.setPosition(position);
         window.draw(circle);
 
         sf::Text text;
         text.setFont(font);
         text.setString(std::to_string(node->get_value()));
-        text.setCharacterSize(15);
+        text.setCharacterSize(15);//the point on y
         text.setFillColor(sf::Color::White);
-        text.setPosition(position.x + 10, position.y + 5);
+        text.setPosition(position.x + 20, position.y + 5);//the point on X
         window.draw(text);
 
         float childXOffset = xOffset / 2.0f;
@@ -189,7 +188,7 @@ public:
             }
 
             window.clear();
-            drawNode(window, root, sf::Vector2f(400, 50), 200, 100);
+            drawNode(window, root, sf::Vector2f(400, 100), 200, 100);//location of nodes
             window.display();
         }
     }

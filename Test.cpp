@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "Node.hpp"
 #include "doctest.h"
-#include "iterators.hpp"
+#include "Iterators.hpp"
 #include "tree.hpp"
 
 using namespace std;

@@ -17,11 +17,11 @@ valgrind: tree
 	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./tree 2>&1 | { egrep "lost| at " || true; }
 
 # Main executable
-tree: tree.hpp iterators.hpp Node.hpp main.cpp Complex.cpp Complex.hpp
+tree: tree.hpp Iterators.hpp Node.hpp main.cpp Complex.cpp Complex.hpp
 	$(CC) $(SFML_INCLUDE) main.cpp Complex.cpp -o tree $(SFML_LIBS)
 
 # Test executable
-test: tree.hpp iterators.hpp Node.hpp Test.cpp Complex.cpp Complex.hpp
+test: tree.hpp Iterators.hpp Node.hpp Test.cpp Complex.cpp Complex.hpp
 	$(CC) $(SFML_INCLUDE) Test.cpp Complex.cpp -o test $(SFML_LIBS)
 
 # Clean target
