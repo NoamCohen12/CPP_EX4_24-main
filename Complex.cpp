@@ -1,11 +1,11 @@
-#include <cmath> // Include this at the top of your Complex.cpp file
+#include "Complex.hpp" 
 
 bool Complex::operator<(const Complex &other) {
-    return sqrt(real * real + imag * imag) < sqrt(other.real * other.real + other.imag * other.imag);
+    return sqrt(real * real + image * image) < sqrt(other.real * other.real + other.image * other.image);
 }
  // to_string function
-    std::string Complex::to_string() const {
-        std::ostringstream oss;
-        oss << "(" << realPart << " + " << imagePart << "i)";
+    string Complex::to_string() const {
+        ostringstream oss;
+        oss << "(" << real << " + " << image << "i)";
         return oss.str();
     }

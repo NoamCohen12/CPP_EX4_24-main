@@ -66,10 +66,8 @@ cout << "heap scan:\n";
     for (auto node = tree.begin_heap_scan(); node != tree.end_heap_scan(); ++node) {
         cout << node->get_value() << ", " << endl;
     }  // prints: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
-     auto node = tree.begin_pre_order();
-     auto node1 = tree.end_pre_order();
-    //cout << node->get_value() << endl;
-    //cout << node1->get_value() << endl;
+   
+    tree.draw();
 
     return 0;
 }
