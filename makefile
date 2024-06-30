@@ -6,15 +6,12 @@ SFML_INCLUDE = -I/path/to/sfml/include
 SFML_LIBDIR = -L/path/to/sfml/lib
 SFML_LIBS = $(SFML_LIBDIR) -lsfml-graphics -lsfml-window -lsfml-system
 
-# Valgrind flags
-VALGRIND_FLAGS = -v --leak-check=full --show-leak-kinds=all --error-exitcode=99
-
 # Build targets
 all: tree test
 
 # Valgrind target
 valgrind: tree
-	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./tree 2>&1 | { egrep "lost| at " || true; }
+	valgrind ./tree --tool=memcheck -v --leak-check=full --show-leak-kinds=all --suppressions=qt.supp --error-exitcode=99
 
 # Main executable
 tree: tree.hpp Iterators.hpp Node.hpp main.cpp Complex.cpp Complex.hpp
@@ -23,6 +20,10 @@ tree: tree.hpp Iterators.hpp Node.hpp main.cpp Complex.cpp Complex.hpp
 # Test executable
 test: tree.hpp Iterators.hpp Node.hpp Test.cpp Complex.cpp Complex.hpp
 	$(CC) $(SFML_INCLUDE) Test.cpp Complex.cpp -o test $(SFML_LIBS)
+
+# Demo 
+demo: tree.hpp Iterators.hpp Node.hpp Demo.cpp Complex.cpp Complex.hpp
+	$(CC) $(SFML_INCLUDE) Demo.cpp Complex.cpp -o demo $(SFML_LIBS)
 
 # Clean target
 clean:

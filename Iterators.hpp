@@ -76,6 +76,7 @@ class PostOrderIterator {
             advance();  // Initialize current with the first node to process
         }
     }
+    
 
     Node<T>* operator*() const {
         return current;
@@ -239,6 +240,7 @@ class DFSIterator {
 
    public:
     DFSIterator(Node<T>* root) : current(nullptr) {
+         
         if (root != nullptr) {
             stack.push(root);
             ++(*this);  // Initialize the iterator to the first element

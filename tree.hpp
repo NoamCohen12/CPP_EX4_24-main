@@ -2,57 +2,82 @@
 #define TREE_HPP
 
 #include <SFML/Graphics.hpp>
+#include <iostream>  // for std::cerr
+#include <sstream>   // Include this at the top of your file
 #include <stdexcept>
 #include <vector>
-#include <iostream> // for std::cerr
 
-#include "Node.hpp"
+#include "Complex.hpp"
 #include "Iterators.hpp"
+#include "Node.hpp"
 
-template <typename T, int N = 2>
+template <typename T, int N = 2>//default value of N is >= 2
 class Tree {
-private:
+   private:
     Node<T>* root;
     sf::Font font;
 
-    void drawNode(sf::RenderWindow& window, Node<T>* node, sf::Vector2f position, float xOffset, float yOffset) {
+    void drawNode(sf::RenderWindow& window, Node<T>* node, sf::Vector2f position, float xOffset, float yOffset, int depth = 0) {
         if (node == nullptr) return;
 
-        sf::CircleShape circle(20);
+        // Dynamic circle size based on xOffset, ensuring it's visually proportional
+        float circleRadius = std::max(30.0f, xOffset / 5);
+        sf::CircleShape circle(circleRadius);
         circle.setFillColor(sf::Color::Green);
-        circle.setPosition(position);
+        circle.setPosition(position - sf::Vector2f(circleRadius, circleRadius));  // Center the circle on the position
         window.draw(circle);
 
+        // Adjust text size based on circle size
         sf::Text text;
         text.setFont(font);
-        text.setString(std::to_string(node->data));
-        text.setCharacterSize(15);
-        text.setFillColor(sf::Color::White);
-        text.setPosition(position.x + 10, position.y + 5);
+        std::ostringstream oss;
+        oss << node->get_value();  // This works for any type that supports the << operator
+        text.setString(oss.str());
+        text.setCharacterSize(15);  // Scale text size with circle size
+        text.setFillColor(sf::Color::Blue);
+
+        // Center text within the circle
+        sf::FloatRect textRect = text.getLocalBounds();
+        text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+        text.setPosition(position);
         window.draw(text);
 
-        float childXOffset = xOffset / N;
-        float childYOffset = yOffset;
+        // Dynamically adjust child node positioning and line drawing based on depth
+        float childXOffset = std::max(static_cast<float>(xOffset / std::pow(2, depth)), 50.0f);  // Ensure minimum spacing
+
+        float childYOffset = yOffset + depth * 20;  // Increase yOffset with depth to spread nodes vertically
 
         for (size_t i = 0; i < node->children.size(); ++i) {
             sf::Vector2f childPosition(position.x + (i - (node->children.size() - 1) / 2.0f) * childXOffset, position.y + childYOffset);
 
+            // Draw lines with increased thickness
             sf::Vertex line[] = {
-                sf::Vertex(sf::Vector2f(position.x + 20, position.y + 20)),
-                sf::Vertex(sf::Vector2f(childPosition.x + 20, childPosition.y + 20))};
+                sf::Vertex(sf::Vector2f(position.x, position.y), sf::Color::White),
+                sf::Vertex(sf::Vector2f(childPosition.x, childPosition.y), sf::Color::White)};
+            line[0].color = sf::Color::Red;
+            line[1].color = sf::Color::Red;
             window.draw(line, 2, sf::Lines);
 
-            drawNode(window, node->children[i], childPosition, childXOffset, childYOffset);
+            drawNode(window, node->children[i], childPosition, childXOffset * 0.8, childYOffset, depth + 1);  // Pass depth to recursively adjust spacing
         }
     }
 
-public:
+   public:
     Tree() : root(nullptr) {
-        if (!font.loadFromFile("arial.ttf")) {
+        if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf")) {
             std::cerr << "Error loading font 'arial.ttf'\n";
         }
     }
     ~Tree() {}
+
+     BfsIterator<T> begin() {  // Default iterator
+        return begin_bfs_scan();
+    }
+
+    BfsIterator<T> end() {  // Default iterator
+        return end_bfs_scan();
+    }
+   
 
     void add_root(Node<T>* root) {
         if (root == nullptr) {
@@ -71,6 +96,9 @@ public:
         parent->children.push_back(child);
     }
 
+Node<double>* get_root() {
+    return root;
+}
     void draw() {
         sf::RenderWindow window(sf::VideoMode(800, 600), "Tree Visualization");
 
@@ -112,10 +140,10 @@ public:
     HeapIterator<T> end_heap_scan() { return HeapIterator<T>(nullptr); }
 };
 
-// Specialization for binary tree
+// Specialization for binary tree (N = 2)
 template <typename T>
 class Tree<T, 2> {
-private:
+   private:
     Node<T>* root;
     sf::Font font;
 
@@ -128,10 +156,13 @@ private:
 
         sf::Text text;
         text.setFont(font);
-        text.setString(std::to_string(node->get_value()));
-        text.setCharacterSize(15);//the point on y
+        std::ostringstream oss;
+        oss << node->get_value();  // This works for any type that supports the << operator
+        text.setString(oss.str());
+        // text.setString(std::to_string(node->get_value()));
+        text.setCharacterSize(15);  // the point on y
         text.setFillColor(sf::Color::White);
-        text.setPosition(position.x + 20, position.y + 5);//the point on X
+        text.setPosition(position.x + 20, position.y + 5);  // the point on X
         window.draw(text);
 
         float childXOffset = xOffset / 2.0f;
@@ -149,13 +180,20 @@ private:
         }
     }
 
-public:
+   public:
     Tree() : root(nullptr) {
-        if (!font.loadFromFile("arial.ttf")) {
+        if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf")) {
             std::cerr << "Error loading font 'arial.ttf'\n";
         }
     }
     ~Tree() {}
+        BfsIterator<T> begin() {  // Default iterator
+        return begin_bfs_scan();
+    }
+
+    BfsIterator<T> end() {  // Default iterator
+        return end_bfs_scan();
+    }
 
     void add_root(Node<T>* root) {
         if (root == nullptr) {
@@ -176,7 +214,9 @@ public:
         }
         parent->children.push_back(child);
     }
-
+Node<double>* get_root() {
+    return root;
+}
     void draw() {
         sf::RenderWindow window(sf::VideoMode(800, 600), "Binary Tree Visualization");
 
@@ -188,7 +228,7 @@ public:
             }
 
             window.clear();
-            drawNode(window, root, sf::Vector2f(400, 100), 200, 100);//location of nodes
+            drawNode(window, root, sf::Vector2f(400, 100), 200, 100);  // location of nodes
             window.display();
         }
     }

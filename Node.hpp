@@ -14,6 +14,14 @@ public:
 
     T get_value() const { return value; }
 
+     void remove_children() {
+        children.clear();
+    }
+
+ bool operator==(const Node& other) const {
+    return value == other.value;
+}
+
     
 };
 
