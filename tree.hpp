@@ -68,7 +68,20 @@ class Tree {
             std::cerr << "Error loading font 'arial.ttf'\n";
         }
     }
-    ~Tree() {}
+    ~Tree() {
+     
+           BfsIterator<T> it = begin();
+        BfsIterator<T> prev = it;
+        BfsIterator<T> end = end_bfs_scan();
+        while (it != end) {
+            prev = it;
+            ++it;
+            prev->remove_children();
+        }
+        root = nullptr;
+    }
+    
+    
 
      BfsIterator<T> begin() {  // Default iterator
         return begin_bfs_scan();

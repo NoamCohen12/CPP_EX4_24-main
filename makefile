@@ -27,4 +27,4 @@ demo: tree.hpp Iterators.hpp Node.hpp Demo.cpp Complex.cpp Complex.hpp
 
 # Clean target
 clean:
-	rm -f tree test *.o
+	rm -f tree test demo *.o

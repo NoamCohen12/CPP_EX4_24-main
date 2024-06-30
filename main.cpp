@@ -8,14 +8,13 @@
 using namespace std;
 int main() {
     Node<double> root_nodee = Node(1.1);
-    Tree<double> tree1;  // Binary tree that contains doubles.
-    tree1.add_root(&root_nodee);
     Node<double> n11 = Node(1.2);
     Node<double> n22 = Node(1.3);
     Node<double> n33 = Node(1.4);
     Node<double> n44 = Node(1.5);
     Node<double> n55 = Node(1.6);
-
+    Tree<double> tree1;  // Binary tree that contains doubles.
+    tree1.add_root(&root_nodee);
     tree1.add_sub_node(&root_nodee, &n11);
     tree1.add_sub_node(&root_nodee, &n22);
     tree1.add_sub_node(&n11, &n33);
@@ -88,7 +87,6 @@ for (auto node : tree1)
      *   /        |
      *  1.5      1.6
      */
-    Tree<double, 3> tree111;  // Binary tree that contains doubles.
     Node<double> root_nodeee = Node(1.1);
     Node<double> n111 = Node(1.2);
     Node<double> n222 = Node(1.3);
@@ -100,6 +98,7 @@ for (auto node : tree1)
     Node<double> n888 = Node(1.9);
     Node<double> n999 = Node(2.0);
 
+    Tree<double, 3> tree111;  // Binary tree that contains doubles.
     tree111.add_root(&root_nodeee);
     tree111.add_sub_node(&root_nodeee, &n111);
     tree111.add_sub_node(&root_nodeee, &n222);
@@ -118,6 +117,10 @@ for (auto node : tree1)
 //            1.2      1.3      1.7
 //           /  \      /|  /
 //         1.4 1.5  1.6 1.8 1.9
+
+ 
+
+
 
 
     return 0;
