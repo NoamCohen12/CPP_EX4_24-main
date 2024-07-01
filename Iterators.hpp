@@ -48,10 +48,10 @@ class PreOrderIterator {
         }
         return *this;
     }
-    bool operator!=(const PreOrderIterator& other) {
+    bool operator!=(const PreOrderIterator& other) const{
         return !(stack.top() == other.stack.top());
     }
-    bool operator==(const PreOrderIterator& other) {
+    bool operator==(const PreOrderIterator& other) const{
         return stack.top() == other.stack.top();
     }
     Node<T>* operator[](int n) {
@@ -224,10 +224,10 @@ class BfsIterator {
     Node<T>* operator->() {
         return current;
     }
-    bool operator!=(const BfsIterator& other) {
+    bool operator!=(const BfsIterator& other)const { 
         return !(current == other.current);
     }
-    bool operator==(const BfsIterator& other) {
+    bool operator==(const BfsIterator& other)const { 
         return current == other.current;
     }
 };

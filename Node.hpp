@@ -10,7 +10,10 @@ public:
     std::vector<Node*> children; 
     float x, y;  // Position for visualization
 
-    Node(T val) : value(val) {}
+    Node(T val) : value(val) {
+
+        
+    }
 
     T get_value() const { return value; }
 

@@ -148,9 +148,9 @@ Node<double>* get_root() {
     DFSIterator<T> begin_dfs_scan() { return DFSIterator<T>(root); }
     DFSIterator<T> end_dfs_scan() { return DFSIterator<T>(nullptr); }
 
-    // Heap traversal iterators
-    HeapIterator<T> begin_heap_scan() { return HeapIterator<T>(root); }
-    HeapIterator<T> end_heap_scan() { return HeapIterator<T>(nullptr); }
+    // // Heap traversal iterators
+    // HeapIterator<T> begin_heap_scan() { return HeapIterator<T>(root); }
+    // HeapIterator<T> end_heap_scan() { return HeapIterator<T>(nullptr); }
 };
 
 // Specialization for binary tree (N = 2)

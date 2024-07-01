@@ -78,7 +78,7 @@ for (auto node : tree1)
     tree.add_sub_node(&n1, &n4);
     tree.add_sub_node(&n2, &n5);
      tree.draw();
-
+//drawTreeGUI(tree);
     // The tree should look like:
     /**
      *       root = 1.1
@@ -108,7 +108,7 @@ for (auto node : tree1)
     tree111.add_sub_node(&n222, &n555);
     tree111.add_sub_node(&n222, &n777);
     tree111.add_sub_node(&n222, &n888);
-
+//drawTreeGUI(tree111);
     tree111.draw();
    // The tree structure should represent the following hierarchy:
 
