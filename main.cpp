@@ -98,6 +98,7 @@ for (auto node : tree1)
     Node<double> n888 = Node(1.9);
     Node<double> n999 = Node(2.0);
 
+
     Tree<double, 3> tree111;  // Binary tree that contains doubles.
     tree111.add_root(&root_nodeee);
     tree111.add_sub_node(&root_nodeee, &n111);
@@ -108,7 +109,6 @@ for (auto node : tree1)
     tree111.add_sub_node(&n222, &n555);
     tree111.add_sub_node(&n222, &n777);
     tree111.add_sub_node(&n222, &n888);
-//drawTreeGUI(tree111);
     tree111.draw();
    // The tree structure should represent the following hierarchy:
 

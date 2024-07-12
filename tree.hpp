@@ -34,7 +34,7 @@ class Tree {
         oss << node->get_value();  // This works for any type that supports the << operator
         text.setString(oss.str());
         text.setCharacterSize(15);  // Scale text size with circle size
-        text.setFillColor(sf::Color::Blue);
+        text.setFillColor(sf::Color::Black);
 
         // Center text within the circle
         sf::FloatRect textRect = text.getLocalBounds();
@@ -54,8 +54,8 @@ class Tree {
             sf::Vertex line[] = {
                 sf::Vertex(sf::Vector2f(position.x, position.y), sf::Color::White),
                 sf::Vertex(sf::Vector2f(childPosition.x, childPosition.y), sf::Color::White)};
-            line[0].color = sf::Color::Red;
-            line[1].color = sf::Color::Red;
+            line[0].color = sf::Color::Yellow;
+            line[1].color = sf::Color::Yellow;
             window.draw(line, 2, sf::Lines);
 
             drawNode(window, node->children[i], childPosition, childXOffset * 0.8, childYOffset, depth + 1);  // Pass depth to recursively adjust spacing
@@ -70,7 +70,7 @@ class Tree {
     }
     ~Tree() {
      
-           BfsIterator<T> it = begin();
+        BfsIterator<T> it = begin();
         BfsIterator<T> prev = it;
         BfsIterator<T> end = end_bfs_scan();
         while (it != end) {
@@ -162,33 +162,48 @@ class Tree<T, 2> {
 
     void drawNode(sf::RenderWindow& window, Node<T>* node, sf::Vector2f position, float xOffset, float yOffset) {
         if (node == nullptr) return;
-        sf::CircleShape circle(20);
+        // Circle's radius
+        float radius = 35;
+        sf::CircleShape circle(radius);
         circle.setFillColor(sf::Color::Blue);
-        circle.setPosition(position);
+        // Adjust position to keep the circle centered with the new size
+        circle.setPosition(position.x - radius, position.y - radius);
+    
         window.draw(circle);
-
+    
         sf::Text text;
         text.setFont(font);
         std::ostringstream oss;
-        oss << node->get_value();  // This works for any type that supports the << operator
+        oss << node->get_value();
         text.setString(oss.str());
-        // text.setString(std::to_string(node->get_value()));
-        text.setCharacterSize(15);  // the point on y
+        text.setCharacterSize(15);
         text.setFillColor(sf::Color::White);
-        text.setPosition(position.x + 20, position.y + 5);  // the point on X
+        sf::FloatRect textRect = text.getLocalBounds();
+        text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+        text.setPosition(position);
+    
         window.draw(text);
-
+    
         float childXOffset = xOffset / 2.0f;
         float childYOffset = yOffset;
-
+    
         for (size_t i = 0; i < node->children.size(); ++i) {
             sf::Vector2f childPosition(position.x + (i == 0 ? -childXOffset : childXOffset), position.y + childYOffset);
-
+    
+            // Calculate direction vector from parent to child
+            sf::Vector2f direction = childPosition - position;
+            float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+            sf::Vector2f normalizedDirection = direction / length;
+    
+            // Calculate start and end points for the line
+            sf::Vector2f lineStart = position + normalizedDirection * radius;
+            sf::Vector2f lineEnd = childPosition - normalizedDirection * radius;
+    
             sf::Vertex line[] = {
-                sf::Vertex(sf::Vector2f(position.x + 20, position.y + 20)),
-                sf::Vertex(sf::Vector2f(childPosition.x + 20, childPosition.y + 20))};
+                sf::Vertex(lineStart),
+                sf::Vertex(lineEnd)};
             window.draw(line, 2, sf::Lines);
-
+    
             drawNode(window, node->children[i], childPosition, childXOffset, childYOffset);
         }
     }
